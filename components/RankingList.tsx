@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, Dimensions, TouchableOpacity, TouchableWithoutFeedback, AppState, Platform, Modal } from 'react-native';
 import QRCode from 'react-native-qrcode-svg'; // QR 코드 생성 라이브러리
-import { RankingDTO } from './types/RankingDTO';
+// import { RankingDTO } from './types/RankingDTO';
 import { mockRankingData } from './data/mockRankingData';
 
 const { height } = Dimensions.get('window');
@@ -139,6 +139,9 @@ const styles = StyleSheet.create({
   listContainer: {
     maxHeight: height * 0.6,
   },
+  rank: {},
+  name: {},
+  time: {},
   item: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -171,6 +174,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   qrButton: {
+    backgroundColor: 'white',
     borderWidth: 1,
     borderColor: '#8647F0',
     borderRadius: 25,
