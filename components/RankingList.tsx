@@ -1,17 +1,41 @@
-import React from 'react';
-import { View, Text, FlatList, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
-import Svg, { Path } from 'react-native-svg'; // SVG 사용을 위한 import
-// import QRIcon from '../assets/images/qricon.svg'; // SVG 아이콘 import
+import React, { useState, useEffect } from 'react';
+import { View, Text, FlatList, StyleSheet, Dimensions, TouchableOpacity, AppState, Platform } from 'react-native';
 import { RankingDTO } from './types/RankingDTO';
 import { mockRankingData } from './data/mockRankingData';
 
 const { height } = Dimensions.get('window');
 
 const RankingList = () => {
+  const [localDate, setLocalDate] = useState(getCurrentTime());
+
+  // background → foreground 전환 시 현재 시간으로 새로고침
+  useEffect(() => {
+    const updateTime = () => setLocalDate(getCurrentTime());
+
+    if (Platform.OS === 'web') {
+      // 웹 환경에서는 visibilitychange 이벤트 사용
+      const handleVisibilityChange = () => {
+        if (document.visibilityState === 'visible') {
+          updateTime();
+        }
+      };
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+      return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+    } else {
+      // 모바일 환경에서는 AppState 사용
+      const subscription = AppState.addEventListener('change', (nextAppState) => {
+        if (nextAppState === 'active') {
+          updateTime();
+        }
+      });
+      return () => subscription.remove();
+    }
+  }, []);
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>우리 지점 랭킹</Text>
-      <Text style={styles.subHeader}>00시 00분 기준</Text>
+      <Text style={styles.subHeader}>{localDate} 기준</Text>
       <View style={styles.rankInfoContainer}>
         <Text style={styles.myRank}>
           나의 랭킹: <Text style={styles.bold}>23등</Text>
@@ -36,7 +60,6 @@ const RankingList = () => {
           <Text style={styles.buttonText}>AOS</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.qrButton}>
-          {/* <QRIcon width={24} height={24} style={styles.qrIcon} /> */}
           <Text style={styles.buttonText}>입장 QR 코드</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.floatingButton}>
@@ -45,6 +68,14 @@ const RankingList = () => {
       </View>
     </View>
   );
+};
+
+// 현재 시간을 "HH시 MM분" 형식으로 반환
+const getCurrentTime = () => {
+  const now = new Date();
+  const hours = now.getHours().toString().padStart(2, '0');
+  const minutes = now.getMinutes().toString().padStart(2, '0');
+  return `${hours}시 ${minutes}분`;
 };
 
 const styles = StyleSheet.create({
@@ -155,9 +186,6 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 16,
     fontWeight: 'bold',
-  },
-  qrIcon: {
-    marginRight: 8,
   },
 });
 
