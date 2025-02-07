@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, Dimensions, TouchableOpacity, AppState, Platform } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Dimensions, TouchableOpacity, TouchableWithoutFeedback, AppState, Platform, Modal } from 'react-native';
+import QRCode from 'react-native-qrcode-svg'; // QR 코드 생성 라이브러리
 import { RankingDTO } from './types/RankingDTO';
 import { mockRankingData } from './data/mockRankingData';
 
@@ -7,13 +8,12 @@ const { height } = Dimensions.get('window');
 
 const RankingList = () => {
   const [localDate, setLocalDate] = useState(getCurrentTime());
+  const [isModalVisible, setIsModalVisible] = useState(false); // 모달 상태 추가
 
-  // background → foreground 전환 시 현재 시간으로 새로고침
   useEffect(() => {
     const updateTime = () => setLocalDate(getCurrentTime());
 
     if (Platform.OS === 'web') {
-      // 웹 환경에서는 visibilitychange 이벤트 사용
       const handleVisibilityChange = () => {
         if (document.visibilityState === 'visible') {
           updateTime();
@@ -22,7 +22,6 @@ const RankingList = () => {
       document.addEventListener('visibilitychange', handleVisibilityChange);
       return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
     } else {
-      // 모바일 환경에서는 AppState 사용
       const subscription = AppState.addEventListener('change', (nextAppState) => {
         if (nextAppState === 'active') {
           updateTime();
@@ -36,6 +35,7 @@ const RankingList = () => {
     <View style={styles.container}>
       <Text style={styles.header}>우리 지점 랭킹</Text>
       <Text style={styles.subHeader}>{localDate} 기준</Text>
+
       <View style={styles.rankInfoContainer}>
         <Text style={styles.myRank}>
           나의 랭킹: <Text style={styles.bold}>23등</Text>
@@ -43,6 +43,7 @@ const RankingList = () => {
         <Text style={styles.rankChange}>+2 상승</Text>
         <Text style={styles.timeRemaining}>13시간 10분</Text>
       </View>
+
       <FlatList
         data={mockRankingData}
         keyExtractor={(item) => item.rank.toString()}
@@ -55,17 +56,35 @@ const RankingList = () => {
         )}
         contentContainerStyle={styles.listContainer}
       />
+
+      {/* Floating Button (QR 코드 버튼) */}
       <View style={styles.floatingButtonContainer}>
         <TouchableOpacity style={styles.floatingButton}>
           <Text style={styles.buttonText}>AOS</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.qrButton}>
+        <TouchableOpacity style={styles.qrButton} onPress={() => setIsModalVisible(true)}>
           <Text style={styles.buttonText}>입장 QR 코드</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.floatingButton}>
           <Text style={styles.buttonText}>iOS</Text>
         </TouchableOpacity>
       </View>
+
+      {/* QR 코드 모달 */}
+      <Modal visible={isModalVisible} transparent={true} animationType="none" onRequestClose={() => setIsModalVisible(false)}>
+        <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={() => setIsModalVisible(false)}>
+          <TouchableWithoutFeedback onPress={(e) => e.stopPropagation()}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalTitle}>QR 로그인</Text>
+              <Text style={styles.modalDesc}>
+                좌석에 있는 기기에
+                <br /> QR코드를 인식시켜주세요!
+              </Text>
+              <QRCode value="https://example.com" size={258} />
+            </View>
+          </TouchableWithoutFeedback>
+        </TouchableOpacity>
+      </Modal>
     </View>
   );
 };
@@ -129,27 +148,6 @@ const styles = StyleSheet.create({
     marginVertical: 6,
     backgroundColor: '#f9f9f9',
     borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  rank: {
-    fontWeight: 'bold',
-    fontSize: 18,
-    color: '#333',
-  },
-  name: {
-    flex: 1,
-    textAlign: 'center',
-    fontSize: 16,
-    fontWeight: '500',
-    color: '#555',
-  },
-  time: {
-    fontSize: 16,
-    color: '#777',
   },
   floatingButtonContainer: {
     flexDirection: 'row',
@@ -186,6 +184,41 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 32,
+    alignItems: 'center',
+    width: 342,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 16,
+  },
+  modalDesc: {
+    fontSize: 16,
+    textAlign: 'center',
+    color: '#8E8E93',
+    marginBottom: 10,
+  },
+  closeButton: {
+    marginTop: 16,
+    backgroundColor: '#8647F0',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+  },
+  closeButtonText: {
+    color: '#fff',
+    fontSize: 16,
   },
 });
 
