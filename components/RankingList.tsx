@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, Dimensions, TouchableOpacity, AppState, Platform } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Dimensions, TouchableOpacity, AppState, Platform, Image } from 'react-native';
 import QRModal from './QRModal'; // 분리한 QRModal 컴포넌트 임포트
 import { mockRankingData } from './data/mockRankingData';
+import qrIcon from "../assets/images/icon_qr.png";
 
 const { height } = Dimensions.get('window');
 
@@ -48,6 +49,7 @@ const RankingList = () => {
           <Text style={styles.buttonText}>AOS</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.qrButton} onPress={() => setIsModalVisible(true)}>
+          <Image source={qrIcon} style={styles.qrIcon} />
           <Text style={styles.buttonText}>입장 QR 코드</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.floatingButton}>
@@ -120,6 +122,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   qrButton: {
+    flexDirection: 'row', // ✅ 아이콘과 텍스트를 가로 정렬
+    alignItems: 'center', // ✅ 세로 중앙 정렬
     backgroundColor: 'white',
     borderWidth: 1,
     borderColor: '#8647F0',
@@ -128,8 +132,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     width: 170,
     height: 52,
-    alignItems: 'center',
     justifyContent: 'center',
+  },
+  qrIcon: {
+    width: 24, // ✅ 아이콘 크기 조절
+    height: 24,
+    marginRight: 8, // ✅ 텍스트와 간격 조정
   },
   buttonText: {
     fontSize: 16,
