@@ -7,18 +7,25 @@ interface QRModalProps {
   isVisible: boolean;
   onClose: () => void;
 }
+const generateQrValue = () => {
+  const randomNum = Math.floor(Math.random() * 100)
+    .toString()
+    .padStart(2, '0');
+  return `황선영_${randomNum}`;
+};
 
 const QRModal: React.FC<QRModalProps> = ({ isVisible, onClose }) => {
-  const [timeLeft, setTimeLeft] = useState(180); // 3분 (180초)
-  const timerRef = useRef<NodeJS.Timeout | null>(null); // 🔥 타이머를 추적하는 useRef 추가
+  const [timeLeft, setTimeLeft] = useState(180);
+  const [qrValue, setQrValue] = useState(generateQrValue());
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (!isVisible) return;
 
-    // ✅ 기존 타이머 클리어 후 새로운 타이머 시작
     if (timerRef.current) clearInterval(timerRef.current);
 
-    setTimeLeft(180); // 타이머 리셋
+    setTimeLeft(180);
+    setQrValue(generateQrValue());
 
     timerRef.current = setInterval(() => {
       setTimeLeft((prev) => {
@@ -44,12 +51,11 @@ const QRModal: React.FC<QRModalProps> = ({ isVisible, onClose }) => {
     return `${minutes}:${secs}`;
   };
 
-  // 🔄 QR 코드 리프레시 기능 (타이머 재시작)
   const onRefresh = () => {
-    if (timerRef.current) clearInterval(timerRef.current); // 기존 타이머 정리
-    setTimeLeft(180); // QR 코드 활성화
+    if (timerRef.current) clearInterval(timerRef.current);
+    setTimeLeft(180);
+    setQrValue(generateQrValue());
 
-    // ⏳ 새로운 타이머 시작
     timerRef.current = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
@@ -67,26 +73,17 @@ const QRModal: React.FC<QRModalProps> = ({ isVisible, onClose }) => {
         <TouchableWithoutFeedback onPress={(e) => e.stopPropagation()}>
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>QR 로그인</Text>
-
             {timeLeft > 0 ? (
               <>
-                <Text style={styles.modalDesc}>
-                  좌석에 있는 기기에
-                  {'\n'} QR코드를 인식시켜주세요!
-                </Text>
-                <QRCode value="https://example.com" size={258} color={'#000000'} />
+                <Text style={styles.modalDesc}>좌석에 있는 기기에{'\n'} QR코드를 인식시켜주세요!</Text>
+                <QRCode value={qrValue} size={258} color={'#000000'} />
                 <Text style={styles.timeDesc}>인증시간 {formatTime(timeLeft)}</Text>
               </>
             ) : (
               <>
-                <Text style={styles.modalDesc}>
-                  스터디카페 QR 로그인 화면에
-                  {'\n'} 인식해주세요.
-                </Text>
-                {/* QR 코드 감싸는 뷰 (중앙에 아이콘 추가) */}
+                <Text style={styles.modalDesc}>스터디카페 QR 로그인 화면에{'\n'}인식해주세요.</Text>
                 <View style={styles.qrContainer}>
-                  <QRCode value="https://example.com" size={258} color={'#CCCCCC'} />
-                  {/* 🔄 중앙에 리프레시 아이콘 배치 (TouchableOpacity 추가) */}
+                  <QRCode value={qrValue} size={258} color={'#CCCCCC'} />
                   <TouchableOpacity style={styles.refreshContainer} onPress={onRefresh}>
                     <View style={styles.refreshCircle}>
                       <Image source={refreshIcon} style={styles.refreshIcon} />
@@ -141,7 +138,6 @@ const styles = StyleSheet.create({
     marginTop: 15,
     color: '#000',
   },
-  /** ✅ QR 코드 & 리프레시 아이콘 관련 스타일 */
   qrContainer: {
     position: 'relative',
   },
@@ -162,7 +158,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
-    elevation: 5, // Android 그림자
+    elevation: 5,
   },
   refreshIcon: {
     width: 40,
