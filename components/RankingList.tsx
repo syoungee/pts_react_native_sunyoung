@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, Dimensions, TouchableOpacity, AppState, Platform, Image } from 'react-native';
-import QRModal from './QRModal'; // 분리한 QRModal 컴포넌트 임포트
+import QRModal from './QRModal';
 import { mockRankingData } from './data/mockRankingData';
-import qrIcon from "../assets/images/icon_qr.png";
+import qrIcon from '../assets/images/icon_qr.png';
+import rankOne from '../assets/images/img_1st.png';
+import rankTwo from '../assets/images/img_2nd.png';
+import rankThree from '../assets/images/img_3rd.png';
 
 const { height } = Dimensions.get('window');
-
 const RankingList = () => {
   const [localDate, setLocalDate] = useState(getCurrentTime());
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -35,7 +37,15 @@ const RankingList = () => {
         keyExtractor={(item) => item.rank.toString()}
         renderItem={({ item }) => (
           <View style={styles.item}>
-            <Text style={styles.rank}>{item.rank}</Text>
+            {item.rank === 1 ? (
+              <Image source={rankOne} style={styles.rankImage} />
+            ) : item.rank === 2 ? (
+              <Image source={rankTwo} style={styles.rankImage} />
+            ) : item.rank === 3 ? (
+              <Image source={rankThree} style={styles.rankImage} />
+            ) : (
+              <Text style={[styles.rankText, styles.otherRank]}>{item.rank}</Text>
+            )}
             <Text style={styles.name}>{item.name}</Text>
             <Text style={styles.time}>{item.time}</Text>
           </View>
@@ -43,7 +53,6 @@ const RankingList = () => {
         contentContainerStyle={styles.listContainer}
       />
 
-      {/* Floating Button */}
       <View style={styles.floatingButtonContainer}>
         <TouchableOpacity style={styles.floatingButton}>
           <Text style={styles.buttonText}>AOS</Text>
@@ -57,13 +66,11 @@ const RankingList = () => {
         </TouchableOpacity>
       </View>
 
-      {/* QR 코드 모달 */}
       <QRModal isVisible={isModalVisible} onClose={() => setIsModalVisible(false)} />
     </View>
   );
 };
 
-// 현재 시간을 "HH시 MM분" 형식으로 반환
 const getCurrentTime = () => {
   const now = new Date();
   return `${now.getHours().toString().padStart(2, '0')}시 ${now.getMinutes().toString().padStart(2, '0')}분`;
@@ -88,7 +95,18 @@ const styles = StyleSheet.create({
   listContainer: {
     maxHeight: height * 0.6,
   },
-  rank: {},
+  rankText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  rankImage: {
+    width: 28,
+    height: 36.75,
+  },
+  otherRank: {
+    width: 30,
+    textAlign: 'center',
+  },
   name: {},
   time: {},
   item: {
@@ -100,6 +118,7 @@ const styles = StyleSheet.create({
     marginVertical: 6,
     backgroundColor: '#f9f9f9',
     borderRadius: 10,
+    height: 64,
   },
   floatingButtonContainer: {
     flexDirection: 'row',
@@ -122,8 +141,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   qrButton: {
-    flexDirection: 'row', // ✅ 아이콘과 텍스트를 가로 정렬
-    alignItems: 'center', // ✅ 세로 중앙 정렬
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: 'white',
     borderWidth: 1,
     borderColor: '#8647F0',
@@ -135,9 +154,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   qrIcon: {
-    width: 24, // ✅ 아이콘 크기 조절
+    width: 24,
     height: 24,
-    marginRight: 8, // ✅ 텍스트와 간격 조정
+    marginRight: 8,
   },
   buttonText: {
     fontSize: 16,
