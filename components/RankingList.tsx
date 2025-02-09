@@ -32,6 +32,18 @@ const RankingList = () => {
       <Text style={styles.header}>우리 지점 랭킹</Text>
       <Text style={styles.subHeader}>{localDate} 기준</Text>
 
+      {/* 나의 랭킹 section */}
+      <View style={styles.myRankingContainer}>
+        <View style={styles.myRankingLeft}>
+          <Text style={styles.myRankingText}>나의랭킹: </Text>
+          <Text style={styles.myRankingRank}>23등</Text>
+          <Text style={styles.rankChangeText}>+2 상승</Text>
+        </View>
+        <View style={styles.myRankingRight}>
+          <Text style={styles.myRankingText}>13시간 10분</Text>
+        </View>
+      </View>
+
       <FlatList
         data={mockRankingData}
         keyExtractor={(item) => item.rank.toString()}
@@ -119,6 +131,43 @@ const styles = StyleSheet.create({
     backgroundColor: '#f9f9f9',
     borderRadius: 10,
     height: 64,
+  },
+  myRankingContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    marginVertical: 6,
+    backgroundColor: '#f9f9f9',
+    borderRadius: 10,
+    height: 64,
+    marginBottom: 16,
+  },
+  myRankingLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  myRankingRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  myRankingText: {
+    fontSize: 16,
+  },
+  myRankingRank: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  rankChangeText: {
+    fontSize: 16,
+    color: '#8d51f0',
+    backgroundColor: '#f7f0ff',
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    borderRadius: 5,
+    marginRight: 8,
+    marginLeft: 5,
   },
   floatingButtonContainer: {
     flexDirection: 'row',
