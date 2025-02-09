@@ -6,6 +6,7 @@ import qrIcon from '../assets/images/icon_qr.png';
 import rankOne from '../assets/images/img_1st.png';
 import rankTwo from '../assets/images/img_2nd.png';
 import rankThree from '../assets/images/img_3rd.png';
+import arrow from '../assets/images/arrow.png'; // Import arrow image
 
 const { height } = Dimensions.get('window');
 const RankingList = () => {
@@ -30,6 +31,10 @@ const RankingList = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>우리 지점 랭킹</Text>
+      <TouchableOpacity style={styles.viewAllButton}>
+        <Text style={styles.viewAllText}>전체 랭킹 보기 </Text>
+        <Image source={arrow} style={styles.arrowIcon} /> {/* Arrow icon */}
+      </TouchableOpacity>
       <Text style={styles.subHeader}>{localDate} 기준</Text>
 
       {/* 나의 랭킹 section */}
@@ -102,8 +107,21 @@ const styles = StyleSheet.create({
   subHeader: {
     fontSize: 14,
     color: '#888',
+    marginTop: 8,
     marginBottom: 16,
   },
+  viewAllButton: {
+    position: 'absolute',
+    right: 16,
+    top: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  arrowIcon: {
+    width: 24,
+    height: 24,
+  },
+
   listContainer: {
     maxHeight: height * 0.6,
   },
