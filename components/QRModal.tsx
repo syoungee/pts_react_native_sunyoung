@@ -18,6 +18,7 @@ const QRModal: React.FC<QRModalProps> = ({ isVisible, onClose }) => {
   const [timeLeft, setTimeLeft] = useState(180);
   const [qrValue, setQrValue] = useState(generateQrValue());
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const prevQrValueRef = useRef<string>(qrValue); // 이전 QR 값을 저장할 ref
 
   useEffect(() => {
     if (!isVisible) return;
@@ -41,7 +42,6 @@ const QRModal: React.FC<QRModalProps> = ({ isVisible, onClose }) => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
   }, [isVisible]);
-
   // MM:SS 형식 변환
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60)
@@ -54,7 +54,15 @@ const QRModal: React.FC<QRModalProps> = ({ isVisible, onClose }) => {
   const onRefresh = () => {
     if (timerRef.current) clearInterval(timerRef.current);
     setTimeLeft(180);
-    setQrValue(generateQrValue());
+
+    let newQrValue = generateQrValue();
+    // 이전 값과 다를 경우에만 업데이트
+    while (newQrValue === prevQrValueRef.current) {
+      newQrValue = generateQrValue();
+    }
+
+    setQrValue(newQrValue); // 새로운 QR 값 설정
+    prevQrValueRef.current = newQrValue; // 이전 QR 값을 업데이트
 
     timerRef.current = setInterval(() => {
       setTimeLeft((prev) => {
@@ -134,7 +142,6 @@ const styles = StyleSheet.create({
   },
   timeDesc: {
     fontSize: 16,
-    fontWeight: 'bold',
     marginTop: 15,
     color: '#000',
   },
