@@ -15,7 +15,7 @@ const MainScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, paddingTop: 50 },
+  container: { flex: 1 },
 });
 
 export default MainScreen;
