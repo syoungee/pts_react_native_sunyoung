@@ -2,7 +2,11 @@
 
 ## 1. 기술 스택
 
-- Frontend: React Native v0.76.6
+- React Native v0.76.6
+- react-native-qrcode-svg v6.3.14 QR 코드 이미지 생성 라이브러리
+- @react-navigation/native v7.0.14 기본적인 네비게이션 기능 제공
+- @react-navigation/stack v7.1.1 스택 기반 네비게이션 구현
+- lucide-react-native v0.474.0 Lucide 아이콘 (Feather Icons 기반의 확장된 아이콘 세트)
 
 ## 2. 설치 및 실행 방법
 
