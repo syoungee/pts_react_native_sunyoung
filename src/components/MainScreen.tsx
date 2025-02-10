@@ -1,21 +1,12 @@
-// MainScreen.tsx
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import RankingList from './RankingList';
-import { useNavigation } from '@react-navigation/native';
+import { View } from 'react-native';
+import RankingList from './RankingList/RankingList';
+import styles from './MainScreenStyles';
 
-const MainScreen = () => {
-  const navigation = useNavigation();
-
-  return (
-    <View style={styles.container}>
-      <RankingList navigation={navigation} />
-    </View>
-  );
-};
-
-const styles = StyleSheet.create({
-  container: { flex: 1 },
-});
+const MainScreen = () => (
+  <View style={styles.container}>
+    <RankingList />
+  </View>
+);
 
 export default MainScreen;
