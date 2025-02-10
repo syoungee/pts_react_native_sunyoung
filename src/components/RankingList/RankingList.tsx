@@ -5,10 +5,10 @@ import QRModal from '../modal/QRModal';
 import { mockRankingData } from '../../data/mockRankingData.ts';
 import { getCurrentTime } from '../utils/date.ts';
 import styles from './RankingListStyles.ts';
-import qrIcon from '../../../assets/images/icon_qr.png';
-import arrow from '../../../assets/images/arrow.png';
 import MyRanking from './MyRanking';
 import RankingItem from './RankingItem';
+import FloatingButton from '../FloatingButton';
+import arrow from '../../../assets/images/arrow.png';
 
 const RankingList = () => {
   const navigation = useNavigation();
@@ -52,18 +52,11 @@ const RankingList = () => {
       />
 
       {/* 플로팅 버튼 */}
-      <View style={styles.floatingButtonContainer}>
-        <TouchableOpacity style={styles.floatingButton} onPress={() => navigation.navigate('AOSPage')}>
-          <Text style={styles.buttonText}>AOS</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.qrButton} onPress={() => setIsModalVisible(true)}>
-          <Image source={qrIcon} style={styles.qrIcon} />
-          <Text style={styles.buttonText}>입장 QR 코드</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.floatingButton} onPress={() => navigation.navigate('IOSPage')}>
-          <Text style={styles.buttonText}>iOS</Text>
-        </TouchableOpacity>
-      </View>
+      <FloatingButton
+        onNavigateAOS={() => navigation.navigate('AOSPage')}
+        onNavigateIOS={() => navigation.navigate('IOSPage')}
+        onShowQRModal={() => setIsModalVisible(true)}
+      />
 
       <QRModal isVisible={isModalVisible} onClose={() => setIsModalVisible(false)} />
     </View>

@@ -1,8 +1,8 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import MainScreen from '../src/components/MainScreen';
-import AOSPage from '../src/components/AOSPage';
-import IOSPage from '../src/components/IOSPage';
+import AOSPage from '../src/components/pages/AOSPage';
+import IOSPage from '../src/components/pages/IOSPage';
 
 const Stack = createStackNavigator();
 
