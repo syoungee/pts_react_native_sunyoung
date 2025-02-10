@@ -68,6 +68,7 @@ const RankingList = () => {
           </View>
         )}
         contentContainerStyle={styles.listContainer}
+        showsVerticalScrollIndicator={false}
       />
 
       <View style={styles.floatingButtonContainer}>
