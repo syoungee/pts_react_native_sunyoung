@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, Dimensions, TouchableOpacity, AppState, Platform, Image } from 'react-native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import QRModal from './QRModal';
 import { mockRankingData } from './data/mockRankingData';
 import qrIcon from '../assets/images/icon_qr.png';
@@ -8,8 +9,15 @@ import rankTwo from '../assets/images/img_2nd.png';
 import rankThree from '../assets/images/img_3rd.png';
 import arrow from '../assets/images/arrow.png'; // Import arrow image
 
+// Navigation prop type
+type NavigationProp = NativeStackNavigationProp<{ AOSPage: undefined }>;
+
+interface Props {
+  navigation: NavigationProp;
+}
+
 const { height } = Dimensions.get('window');
-const RankingList = () => {
+const RankingList: React.FC<Props> = ({ navigation }) => {
   const [localDate, setLocalDate] = useState(getCurrentTime());
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -72,14 +80,14 @@ const RankingList = () => {
       />
 
       <View style={styles.floatingButtonContainer}>
-        <TouchableOpacity style={styles.floatingButton}>
+        <TouchableOpacity style={styles.floatingButton} onPress={() => navigation.navigate('AOSPage')}>
           <Text style={styles.buttonText}>AOS</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.qrButton} onPress={() => setIsModalVisible(true)}>
           <Image source={qrIcon} style={styles.qrIcon} />
           <Text style={styles.buttonText}>입장 QR 코드</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.floatingButton}>
+        <TouchableOpacity style={styles.floatingButton} onPress={() => navigation.navigate('IOSPage')}>
           <Text style={styles.buttonText}>iOS</Text>
         </TouchableOpacity>
       </View>
