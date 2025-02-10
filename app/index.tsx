@@ -1,8 +1,8 @@
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack'; // 스택 네비게이션 추가
-import MainScreen from '../src/components/MainScreen'; // MainScreen 임포트
-import AOSPage from '../src/components/AOSPage'; // AOSPage 임포트
-import IOSPage from '../src/components/IOSPage'; // IOSPage 임포트
+import { createStackNavigator } from '@react-navigation/stack';
+import MainScreen from '../src/components/MainScreen';
+import AOSPage from '../src/components/AOSPage';
+import IOSPage from '../src/components/IOSPage';
 
 const Stack = createStackNavigator();
 
