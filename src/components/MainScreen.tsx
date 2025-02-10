@@ -1,17 +1,15 @@
 // MainScreen.tsx
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import RankingList from '../components/RankingList'; // RankingList 컴포넌트
-import { useNavigation } from '@react-navigation/native'; // 네비게이션 사용
+import RankingList from './RankingList';
+import { useNavigation } from '@react-navigation/native';
 
 const MainScreen = () => {
-  const navigation = useNavigation(); // 네비게이션 훅 사용
+  const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
       <RankingList navigation={navigation} />
-      {/* <FloatingButton type="AOS" />
-      <FloatingButton type="iOS" /> */}
     </View>
   );
 };

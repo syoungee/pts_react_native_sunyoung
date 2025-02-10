@@ -1,4 +1,4 @@
-import { RankingDTO } from '../types/RankingDTO';
+import { RankingDTO } from '../components/types/RankingDTO';
 
 export const mockRankingData: RankingDTO[] = [
   { rank: 1, name: '파*스', time: '21시간 29분' },

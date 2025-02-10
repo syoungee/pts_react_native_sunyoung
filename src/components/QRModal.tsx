@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { View, Text, Modal, TouchableOpacity, TouchableWithoutFeedback, StyleSheet, Image } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
-import refreshIcon from '../assets/images/icon_refresh_2.png';
+import refreshIcon from '../../assets/images/icon_refresh_2.png';
 
 interface QRModalProps {
   isVisible: boolean;

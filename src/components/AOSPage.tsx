@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, Image } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import leftArrowIcon from '../assets/images/icon_arrow_left.png'; // 아이콘 경로
+import leftArrowIcon from '../../assets/images/icon_arrow_left.png';
 
 type NavigationProp = NativeStackNavigationProp<{ AOSPage: undefined }>;
 

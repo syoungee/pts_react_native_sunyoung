@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, Dimensions, TouchableOpacity, AppState, Platform, Image } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import QRModal from './QRModal';
-import { mockRankingData } from './data/mockRankingData';
-import qrIcon from '../assets/images/icon_qr.png';
-import rankOne from '../assets/images/img_1st.png';
-import rankTwo from '../assets/images/img_2nd.png';
-import rankThree from '../assets/images/img_3rd.png';
-import arrow from '../assets/images/arrow.png'; // Import arrow image
+import { mockRankingData } from '../data/mockRankingData';
+import qrIcon from '../../assets/images/icon_qr.png';
+import rankOne from '../../assets/images/img_1st.png';
+import rankTwo from '../../assets/images/img_2nd.png';
+import rankThree from '../../assets/images/img_3rd.png';
+import arrow from '../../assets/images/arrow.png';
 
 // Navigation prop type
 type NavigationProp = NativeStackNavigationProp<{ AOSPage: undefined }>;
