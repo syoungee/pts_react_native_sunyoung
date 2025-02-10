@@ -24,7 +24,7 @@
 📦 pts_react_native_sunyoung
 ├── 📂 app
 │   ├── index.tsx
-├── 📂 components
+├── 📂 src/components
 │   ├── 📂 modal
 │   │   ├── QRModal.tsx
 │   ├── 📂 pages
